@@ -56,7 +56,7 @@ function fillDl(dl, rows) {
 function summaryRows(b) {
   const stale = isTrusted(b) ? '' : ' (last known data)';
   return [
-    ['Bin', b.name + ' (' + b.bin_id + ')'],
+    ['Bin', b.bin_id],
     ['Floor', (FLOOR_INFO[b.floor] || {}).title || 'Floor ' + b.floor],
     ['Fill level', b.fill_percent + '%' + stale],
     ['Status', (STATUS_TEXT[b.status] || b.status) + stale],
@@ -224,7 +224,7 @@ function updateBin() {
   const trusted = isTrusted(b);
   updateMarkers(app);
 
-  $('#d-title').textContent = b.name + ' — ' + b.bin_id;
+  $('#d-title').textContent = b.bin_id;
   const fill = $('#g-fill');
   fill.style.width = b.fill_percent + '%';
   fill.style.background = colorOf(b);
@@ -235,11 +235,10 @@ function updateBin() {
   stale.textContent = 'Last known data — may no longer be accurate (' + connText(b) + ').';
 
   fillDl($('#d-info'), [
-    ['Name / ID', b.name + ' / ' + b.bin_id],
+    ['Bin ID', b.bin_id],
     ['Floor', (FLOOR_INFO[b.floor] || {}).title || 'Floor ' + b.floor],
     ['Fill level', b.fill_percent + '%'],
     ['Status', STATUS_TEXT[b.status] || b.status],
-    ['Tilt', b.is_tilted ? 'Tilted / tipped over' : 'Normal'],
     ['Lid lock', b.lid_locked ? 'Locked (bin full)' : 'Unlocked'],
     ['Person nearby', b.person_near ? 'Yes' : 'No'],
     ['Connection', connText(b)],
@@ -454,7 +453,7 @@ function renderNav() {
     nav.append(a);
   };
   add('#/', 'Overview');
-  (state.bins || []).forEach(b => add('#/bin/' + b.bin_id, b.name + ' (Floor ' + b.floor + ')'));
+  (state.bins || []).forEach(b => add('#/bin/' + b.bin_id, b.bin_id + ' (Floor ' + b.floor + ')'));
 }
 
 function renderBanner() {
